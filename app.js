@@ -2,33 +2,36 @@ const express = require('express');
 const app = express();
 const PORT = 8080;
 const morgan = require('morgan');
-const { db, User, Dog } = require('./db');
+// we need to database
+// import DB and models
+const {db, User, Dog} = require('./db')
 
 app.use(morgan('dev'));
 
 app.get('/', async (req, res, next) => {
   try {
-    // res.send('<h1>WELCOME to our Sequelize intro!</h1>');
+    //res.send('<h1>WELCOME to our Sequelize intro!</h1>');
 
     // 2 ways to create a user/instance in the db
     // new keyword + save
-    // create
 
-    /*
-    const person = new User({
-      name: 'Kate'
-    }); // new keyword means that User is a constructor
-    // is doing what Javascript does with constructor functions
-    console.log('what is person? ', person);
-    const newPerson = await person.save(); // will make an insert into the database and returns the new row as an object.
-    console.log('what is newPerson', newPerson);
-    */
+    // create
+     /*
+     
+     const person = await new User({
+      name: "Zacho",
+    })
+
+    person.save() */
 
     // findOrCreate
+    
     const newPerson = await User.create({
-      name: "Kate"
-    }); // create method saves directly to the db
-    res.send(newPerson);
+      name: "Craig"
+    })
+
+    res.send(newPerson)
+
   } catch (e) {
     next(e);
   }
@@ -36,14 +39,10 @@ app.get('/', async (req, res, next) => {
 
 app.get('/users', async (req, res, next) => {
   try {
-    // 1st argument is an object, and where is a valid key and value will be another object containing the field and value we're looking for
-    const users = await User.findAll({
-      where: {
-        name: 'Kate'
-      }
-    }); // JS class method for 'select * from users'
-    // findAll returns an array of all users from our database
-    res.send(users);
+    const users = await User.findAll();
+
+    res.send(users)
+
   } catch (e) {
     next(e);
   }
@@ -51,14 +50,7 @@ app.get('/users', async (req, res, next) => {
 
 app.get('/dogs', async (req, res, next) => {
   try {
-    // const dogs = await Dog.findAll(); // JS class method for 'select * from dogs'
-    // findAll returns an array of all dogs from our database
 
-    // const dogs = await Dog.findPuppies();
-    // res.send(dogs);
-
-    const dog = await Dog.findByPk(1);
-    res.send(dog.getStatement());
   } catch (e) {
     next(e);
   }
@@ -66,11 +58,16 @@ app.get('/dogs', async (req, res, next) => {
 
 app.get('/users/:userId', async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.userId); // findByPk, findById (older versions of Sequelize), findOne -> all returns an object or null if they can't find anything
-    // select * from users where id = 1 limit 1;
-    const dogs = await user.getDogs();
-    // res.send(user);
-    res.send(dogs);
+    const idForUser = req.params.userId
+  } catch (e) {
+    next(e);
+  }
+})
+
+app.post('/users', async (req, res, next) => {
+  try {
+
+
   } catch (e) {
     next(e);
   }
