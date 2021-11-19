@@ -61,6 +61,7 @@ app.get('/dogs', async (req, res, next) => {
 app.get('/users/:userId', async (req, res, next) => {
   try {
     const idForUser = req.params.userId
+    // find one user
     res.send("In the /users/:userId route")
   } catch (e) {
     next(e);
@@ -78,6 +79,7 @@ app.post('/users', async (req, res, next) => {
   }
 })
 
+// Update a row in the database.
 
 
 // before I ever give my users/clients access to my server, I want to make sure my database is properly synced!
