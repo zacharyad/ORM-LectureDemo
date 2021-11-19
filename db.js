@@ -8,7 +8,6 @@ const db = new Sequelize("postgres://localhost:5432/wiki")
 
 
 
-
 // db.define -> accepts at LEAST 2 arguments
 // 1st one: table name in lowercase and singular
 // 2nd argument is an object whose keys are the field/attribute names and the values are at LEAST the data types we expect
@@ -37,7 +36,6 @@ const Dog = db.define("dog", {
   },
   age: Sequelize.INTEGER
 })
-
 
 
 // when do you add a class method and when do you add an instance method?
@@ -82,6 +80,16 @@ Dog.prototype.getStatement = function() {
 // dogs should have 1 owner which means dogs should have the foreign key "userId"
 
 
+// Dog.belongsTo(User);
+// User.hasMany(Dog);
+
+Dog.belongsTo(User, {
+  foreignKey: {
+    name: "pickle"
+  }
+})
+
+
 console.log('Dog prototype methods', Object.keys(Dog.prototype));
 console.log('User prototype methods', Object.keys(User.prototype));
 
@@ -91,26 +99,28 @@ console.log('User prototype methods', Object.keys(User.prototype));
 // to use class and instance methods
 
 // ModelName.hookName(callback function whose argument is the instance)
-User.beforeValidate(user => {
-  console.log('beforeValidate');
-});
+// User.beforeValidate(user => {
+//   console.log('beforeValidate');
+// });
 
 // VALIDATE HAPPENS HERE OUTSIDE OF ALL OUR LOGS
+
 User.afterValidate(user => {
   console.log('afterValidate');
   // Lets manipulate this "row" or "instance"
   user.name += "!"
 });
 
-User.beforeCreate(user => {
-  console.log('beforeCreate');
-});
+// User.beforeCreate(user => {
+//   console.log('beforeCreate');
+// });
 
-// this is the creation stage
+// this is the creation stage CREATION STAGE
 
-User.afterCreate(user => {
-  console.log('afterCreate');
-});
+// User.afterCreate(user => {
+//   console.log('afterCreate');
+// });
+
 
 module.exports = {
   db,
